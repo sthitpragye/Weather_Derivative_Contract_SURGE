@@ -77,3 +77,10 @@ phase1_prep_features.py
 phase2_step1.py
 
 
+# Ignore everything in output
+phase0/output/*
+
+# Keep these files
+!phase0/output/district_apy_features.csv
+!phase0/output/district_price_features.csv
+!phase0/output/district_weather_features.csv
