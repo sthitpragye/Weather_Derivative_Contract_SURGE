@@ -1,0 +1,76 @@
+district,cluster_id,silhouette_score_individual
+Baghpat,1,0.261125
+Bijnor,1,0.235605
+Meerut,1,0.302328
+Muzaffarnagar,1,0.284424
+Saharanpur,1,0.196737
+Shamli,1,0.201091
+Banda,2,-0.040989
+Chitrakoot,2,0.05684
+Gautam Buddha Nagar,2,0.038956
+Hamirpur,2,-0.036814
+Jhansi,2,0.052618
+Lalitpur,2,0.11253
+Mahoba,2,0.223873
+Agra,3,0.286907
+Aligarh,3,0.3088
+Allahabad,3,0.185977
+Ambedkar Nagar,3,0.318344
+Amethi,3,0.362297
+Amroha,3,0.380278
+Auraiya,3,0.253353
+Azamgarh,3,0.364638
+Bahraich,3,0.34872
+Ballia,3,0.286981
+Balrampur,3,0.362864
+Barabanki,3,0.434373
+Bareilly,3,0.227221
+Basti,3,0.330695
+Budaun,3,0.251158
+Bulandshahr,3,0.245384
+Chandauli,3,0.238329
+Deoria,3,0.315595
+Etah,3,0.269493
+Etawah,3,0.22951
+Faizabad,3,0.397233
+Farrukhabad,3,0.327015
+Fatehpur,3,0.107669
+Firozabad,3,0.282776
+Ghaziabad,3,0.100871
+Ghazipur,3,0.280076
+Gonda,3,0.357262
+Gorakhpur,3,0.330522
+Hapur,3,0.171354
+Hardoi,3,0.364346
+Hathras,3,0.257953
+Jalaun,3,0.195468
+Jaunpur,3,0.281522
+Kannauj,3,0.302222
+Kanpur Dehat,3,0.262986
+Kanpur Nagar,3,0.284638
+Kasganj,3,0.322044
+Kaushambi,3,0.157088
+Kushinagar,3,0.212484
+Lakhimpur Kheri,3,0.259042
+Lucknow,3,0.291
+Maharajganj,3,0.342214
+Mainpuri,3,0.311097
+Mathura,3,0.279971
+Mau,3,0.283409
+Mirzapur,3,0.144768
+Moradabad,3,0.260653
+Pilibhit,3,0.190438
+Pratapgarh,3,0.267578
+Rae Bareli,3,0.345493
+Rampur,3,0.216207
+Sambhal,3,0.328517
+Sant Kabir Nagar,3,0.200345
+Sant Ravi Das Nagar,3,0.32942
+Shahjahanpur,3,0.385171
+Shravasti,3,0.339892
+Siddharth Nagar,3,0.341882
+Sitapur,3,0.373202
+Sonbhadra,3,0.131837
+Sultanpur,3,0.312751
+Unnao,3,0.365664
+Varanasi,3,0.269496
