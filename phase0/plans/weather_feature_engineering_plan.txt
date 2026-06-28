@@ -1,0 +1,290 @@
+WEATHER FEATURE ENGINEERING PLAN (ENHANCED V4)
+
+OBJECTIVE
+Generate a comprehensive district-level weather feature matrix for clustering.
+
+INPUTS
+- district_daily_weather.csv
+- district_monthly_weather.csv
+- district_yearly_weather.csv
+- district_monthly_spi.csv
+
+====================================================================
+
+STANDARD DEFINITIONS
+
+- Tmean: (Tmax + Tmin)/2
+- Diurnal Range: Tmax - Tmin
+- Rainy Day: Rainfall >= 2.5 mm
+- Heavy Rain Day: Rainfall >= 64.5 mm
+- Very Heavy Rain Day: Rainfall >= 115.6 mm
+- Winter: Dec-Feb
+- Summer: Mar-May
+- Monsoon: Jun-Sep
+- Non-Monsoon: Oct-May
+- Rabi: Oct-Mar
+- Trend: Slope of linear regression vs year
+- CAGR: Compound annual growth rate
+- CV: Standard deviation / Mean
+- Frequency: Count satisfying condition / Total observations
+- Persistence: Longest consecutive sequence
+- Anomaly: Value - Long-term mean
+
+====================================================================
+
+====================================================================
+
+PHASE 1 — TEMPERATURE FEATURES
+
+- Mean Tmax: Average yearly Tmax
+- Mean Tmin: Average yearly Tmin
+- Mean Tmean: Average yearly Tmean
+- Median Tmax: Median yearly Tmax
+- Median Tmin: Median yearly Tmin
+- Median Tmean: Median yearly Tmean
+- Std Tmax: Std of yearly Tmax
+- Std Tmin: Std of yearly Tmin
+- Std Tmean: Std of yearly Tmean
+- CV Tmax: Std Tmax / Mean Tmax
+- CV Tmin: Std Tmin / Mean Tmin
+- CV Tmean: Std Tmean / Mean Tmean
+- Maximum Tmax: Largest yearly Tmax
+- Minimum Tmin: Smallest yearly Tmin
+- Maximum Tmean: Largest yearly Tmean
+- Minimum Tmean: Smallest yearly Tmean
+- Average Diurnal Range: Mean(Tmax - Tmin)
+- Mean Winter Temperature: Average Dec-Feb Tmean
+- Mean Summer Temperature: Average Mar-May Tmean
+- Winter CV: CV of winter temperature
+- Summer CV: CV of summer temperature
+- Summer-Winter Difference: Mean summer temp - Mean winter temp
+- Temperature Trend: Regression slope of yearly Tmean
+- Temperature CAGR: CAGR of yearly Tmean
+
+====================================================================
+
+PHASE 2 — RAINFALL FEATURES
+
+- Mean Annual Rainfall: Average yearly rainfall
+- Median Annual Rainfall: Median yearly rainfall
+- Std Annual Rainfall: Std of yearly rainfall
+- Annual Rainfall CV: Std/Mean yearly rainfall
+- Maximum Annual Rainfall: Largest yearly rainfall
+- Mean Monthly Rainfall: Average monthly rainfall
+- Std Monthly Rainfall: Std of monthly rainfall
+- Monthly Rainfall CV: Std/Mean monthly rainfall
+- Maximum Monthly Rainfall: Largest monthly rainfall
+- Minimum Monthly Rainfall: Smallest monthly rainfall
+- Mean Monsoon Rainfall: Average Jun-Sep rainfall
+- Mean Non-Monsoon Rainfall: Average Oct-May rainfall
+- Monsoon Share: Monsoon rainfall / Annual rainfall
+- Monsoon CV: CV of monsoon rainfall
+- Peak Rainfall Month: Month with highest long-term mean rainfall
+- Rainfall Concentration Index: 12×Σ(Pi²)/(ΣPi)²
+- Average Rainy Days: Mean yearly rainy-day count
+- Wet-Day Frequency: Rainy days / Total days
+- Heavy Rain Frequency: Heavy rain days / Total days
+- Very Heavy Rain Frequency: Very heavy rain days / Total days
+- Longest Dry Spell: Longest run with rainfall <2.5 mm
+- Rainfall Trend: Regression slope of yearly rainfall
+- Rainfall CAGR: CAGR of yearly rainfall
+- Rainfall Anomaly Index: Mean standardized rainfall anomaly
+
+====================================================================
+
+PHASE 3 — HDD FEATURES
+
+- Mean HDD: Average yearly HDD
+- Median HDD: Median yearly HDD
+- Std HDD: Std of yearly HDD
+- CV HDD: Std/Mean HDD
+- Maximum HDD: Largest yearly HDD
+- Minimum HDD: Smallest yearly HDD
+- Winter HDD Share: Winter HDD / Annual HDD
+- Summer HDD Share: Summer HDD / Annual HDD
+- Non-zero Year Frequency: Years with HDD>0 / Total years
+- High HDD Frequency: Years above long-term HDD mean / Total years
+- HDD Trend: Regression slope
+- HDD Variability Index: CV of yearly HDD
+- HDD Persistence: Longest run above long-term mean
+- HDD Anomaly: Mean(HDD - long-term HDD mean)
+
+====================================================================
+
+PHASE 4 — SPI FEATURES
+
+- Mean SPI: Average monthly SPI
+- Median SPI: Median monthly SPI
+- Std SPI: Std of monthly SPI
+- Mild Drought Frequency: Months with -1<SPI<=-0.5 / Total
+- Moderate Drought Frequency: Months with -1.5<SPI<=-1 / Total
+- Severe Drought Frequency: Months with SPI<=-1.5 / Total
+- Wet Frequency: Months with SPI>1 / Total
+- Longest Drought Spell: Longest consecutive SPI<-1
+- Longest Wet Spell: Longest consecutive SPI>1
+- Average Drought Duration: Mean drought spell length
+- Minimum SPI: Lowest SPI
+- Maximum SPI: Highest SPI
+- Mean Monsoon SPI: Average Jun-Sep SPI
+- Mean Rabi SPI: Average Oct-Mar SPI
+
+====================================================================
+
+PHASE 5 — CLIMATE STABILITY FEATURES
+
+- Temperature Stability Index: 1/(1+Temperature CV)
+- Rainfall Stability Index: 1/(1+Rainfall CV)
+- HDD Stability Index: 1/(1+HDD CV)
+- SPI Stability Index: 1/(1+SPI Std)
+- Temperature Variance: Variance of yearly temperature
+- Rainfall Variance: Variance of yearly rainfall
+- HDD Variance: Variance of yearly HDD
+- Warmest Year: Year with highest mean temperature
+- Coldest Year: Year with lowest mean temperature
+- Wettest Year: Year with maximum rainfall
+- Driest Year: Year with minimum rainfall
+- Climate Variability Score: Normalized combination of temperature, rainfall, HDD and SPI variability
+
+====================================================================
+PHASE 6 — FEATURE MERGING & VALIDATION
+====================================================================
+
+Objective
+
+Combine all weather feature groups into a single district-level feature
+matrix with one row per district.
+
+Input Feature Groups
+
+- Temperature Features
+- Rainfall Features
+- HDD Features
+- SPI Features
+- Climate Stability Features
+
+Merge Key
+
+district
+
+Merge Procedure
+
+1. Start with the Temperature feature table as the base.
+
+2. Left merge Rainfall features using the district column.
+
+3. Left merge HDD features using the district column.
+
+4. Left merge SPI features using the district column.
+
+5. Left merge Climate Stability features using the district column.
+
+Validation Checks
+
+- Verify every district appears exactly once.
+- Verify no duplicate district IDs exist.
+- Verify no duplicate feature names exist.
+- Verify expected feature count after merging.
+- Verify every feature is numeric except the district identifier.
+- Check for missing values introduced during merging.
+- Fill or flag missing values according to the preprocessing policy.
+- Ensure identical column order across every execution.
+
+Column Naming Convention
+
+Use descriptive snake_case names.
+
+Examples
+
+temperature_mean_tmax
+temperature_cv_tmean
+rainfall_mean_annual
+rainfall_monsoon_share
+hdd18_mean
+spi_mean
+climate_variability_score
+
+Feature Metadata
+
+Generate a summary containing
+
+- Number of districts
+- Number of features
+- Feature names
+- Missing-value statistics
+- Analysis period
+- Feature generation timestamp
+
+Optional Output
+
+phase0_output/weather_feature_metadata.json
+
+====================================================================
+FINAL OUTPUT
+====================================================================
+
+Primary Output
+
+phase0_output/district_weather_features.csv
+
+Structure
+
+Rows
+- One row per district.
+
+Columns
+
+district
+
+Followed by all engineered weather features grouped in the order
+
+1. Temperature Features
+2. Rainfall Features
+3. HDD Features
+4. SPI Features
+5. Climate Stability Features
+
+Expected Dimensions
+
+Rows
+- Number of districts available after preprocessing.
+
+Columns
+
+- district
+- Approximately 90–100 engineered weather features
+
+Properties
+
+- No duplicate districts.
+- No duplicate columns.
+- Fully numeric feature matrix (except district).
+- Consistent schema across runs.
+- Ready for downstream merging.
+
+Downstream Usage
+
+This file will be merged with
+
+phase0_output/district_price_features.csv
+
+and
+
+phase0_output/district_apy_features.csv
+
+using the district column to produce the final clustering dataset.
+
+Final clustering dataset
+
+phase0_output/final_clustering_dataset.csv
+
+Structure
+
+One row per district containing
+
+- Weather features
+- Price features
+- APY features
+
+This dataset serves as the direct input to clustering and all subsequent
+machine learning analyses.
+

@@ -1,0 +1,169 @@
+CLUSTERING MODULE DESIGN
+
+Phase 1 — District Clustering for UP Weather Derivative Project
+
+====================================================================
+OBJECTIVE
+====================================================================
+
+Merge the three Phase 0 feature datasets, perform feature selection,
+dimensionality reduction, and produce a stable Ward hierarchical
+clustering of Uttar Pradesh’s 71 districts. The module outputs district
+cluster assignments, interpretable cluster profiles, and all artifacts
+required for reproducibility.
+
+====================================================================
+INPUTS
+====================================================================
+
+phase0_output/district_weather_features.csv (~71 rows × ~116 cols)
+phase0_output/district_price_features.csv (~71 rows × ~55 cols)
+phase0_output/district_apy_features.csv (~71 rows × ~20 cols)
+
+All three share the ‘district’ column as the merge key.
+
+====================================================================
+PHASE 1 — MERGE & INITIAL VALIDATION
+====================================================================
+
+1.  Load all three feature files.
+2.  Left-join price features onto weather features.
+3.  Left-join APY features onto the merged dataset.
+4.  Verify row count equals the number of weather districts.
+5.  Record district overlap across all three datasets.
+6.  Log districts missing from the price or APY datasets.
+
+Output: final_clustering_dataset.csv
+
+Merge Policy: Use the weather dataset as the anchor. Missing price/APY
+features are retained as NaNs and handled during Phase 2.
+
+====================================================================
+PHASE 2 — MISSING VALUE HANDLING
+====================================================================
+
+Pass 1: - Drop feature columns with >20% missing values.
+
+Pass 2: - Median imputation for remaining missing values. - Flag
+districts with >30% missing retained features without dropping them.
+
+====================================================================
+PHASE 3 — FEATURE SELECTION
+====================================================================
+
+1.  Remove near-zero variance features
+    -   Drop features with CV < 0.01.
+2.  Remove highly correlated features
+    -   Drop one feature from each pair with |r| > 0.95 using a
+        deterministic greedy approach.
+3.  Report:
+    -   Features before selection
+    -   Features dropped (low variance)
+    -   Features dropped (high correlation)
+    -   Features retained
+
+====================================================================
+PHASE 4 — SCALING
+====================================================================
+
+Apply StandardScaler to all retained features.
+
+Save: phase1_output/models/scaler.pkl
+
+====================================================================
+PHASE 5 — PRINCIPAL COMPONENT ANALYSIS
+====================================================================
+
+Objective: Reduce dimensionality while preserving information.
+
+Configuration: PCA_VARIANCE_TARGET = 0.90
+
+Steps: 1. Fit PCA on scaled features. 2. Retain the minimum number of
+components explaining at least 90% cumulative variance. 3. Save
+explained variance ratios and cumulative variance. 4. Project all
+districts into PCA space. 5. Save component loadings. 6. Generate a PC1
+vs PC2 biplot.
+
+Save: phase1_output/models/pca.pkl
+
+====================================================================
+PHASE 6 — HIERARCHICAL CLUSTERING (WARD)
+====================================================================
+
+1.  Compute Euclidean distances in PCA space.
+2.  Perform Ward hierarchical clustering.
+3.  Save the complete dendrogram.
+4.  Evaluate K = 2–10 using: • Dendrogram inspection • Average
+    Silhouette Score
+5.  Decision rule:
+    - If K_OVERRIDE is not None, use the specified K directly.
+    - Otherwise:
+ 	- If both the dendrogram and Silhouette Score agree, use that K.
+	- If they disagree, report both and default to the Silhouette optimum.
+
+Save: phase1_output/models/ward_linkage.npy
+
+====================================================================
+PHASE 7 — CLUSTER PROFILING
+====================================================================
+
+Generate:
+
+1.  cluster_profiles.csv
+    -   Mean of every retained (pre-PCA) feature for each cluster.
+    -   Include an “All Districts” reference row.
+2.  cluster_feature_zscores.csv
+    -   Compute cluster mean z-scores relative to all districts.
+    -   Flag distinguishing features where |z| > 1.
+3.  Cluster summary narrative
+    -   Top 5 distinguishing features.
+    -   Above/below overall district mean.
+4.  district_cluster_assignments.csv Columns: district cluster_id
+    silhouette_score_individual
+
+====================================================================
+PHASE 8 — OUTPUTS
+====================================================================
+
+phase1_output/
+
+├── data/ │ final_clustering_dataset.csv │
+clustering_features_selected.csv │ district_cluster_assignments.csv │
+cluster_profiles.csv │ cluster_feature_zscores.csv │ ├── plots/ │
+dendrogram.png │ scree_plot.png │ pca_biplot.png │ silhouette_plot.png │
+cluster_heatmap.png │ ├── models/ │ scaler.pkl │ pca.pkl │
+ward_linkage.npy │ └── clustering_metadata.json
+
+====================================================================
+CONFIGURATION
+====================================================================
+
+VARIANCE_THRESHOLD = 0.01
+CORRELATION_THRESHOLD = 0.95
+PCA_VARIANCE_TARGET = 0.90
+MAX_K = 10
+
+K_OVERRIDE = None
+# Optional: Set to an integer (e.g., 4) to force that number of clusters.
+# If None, the pipeline automatically selects K.
+
+MISSING_COL_THRESHOLD = 0.20
+MISSING_ROW_THRESHOLD = 0.30
+RANDOM_STATE = 42
+
+====================================================================
+FINAL PIPELINE
+====================================================================
+
+1.  Merge feature tables.
+2.  Validate districts and handle missing values.
+3.  Remove low-variance and highly correlated features.
+4.  Standardize retained features.
+5.  Apply PCA (90% explained variance).
+6.  Perform Ward hierarchical clustering.
+7.  Choose K using:
+    -   Dendrogram
+    -   Silhouette Score
+8.  Generate district cluster assignments.
+9.  Profile clusters.
+10. Save outputs, plots, metadata, and fitted models.

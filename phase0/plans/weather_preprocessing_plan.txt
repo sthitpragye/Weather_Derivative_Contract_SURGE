@@ -1,0 +1,160 @@
+WEATHER PREPROCESSING PLAN WITH OUTPUTS
+
+OBJECTIVE
+
+Transform raw IMD weather datasets into standardized district-level datasets.
+This module performs ONLY preprocessing. No feature engineering is performed.
+
+====================================================================
+PHASE 1 — LOAD & VALIDATE DATA
+====================================================================
+
+Inputs
+- Max_temp_data/
+- Min_temp_data/
+- Rainfall_data/
+- gadm41_IND_shp/
+
+Steps
+1. Load yearly Tmax, Tmin and Rainfall files.
+2. Load district shapefile.
+3. Validate file availability and dimensions.
+4. Validate leap years and missing values.
+5. Validate temperature and rainfall ranges.
+6. Retain only years with complete weather coverage.
+
+Output
+Validated weather datasets.
+
+====================================================================
+PHASE 2 — GRID TO DISTRICT MAPPING
+====================================================================
+
+Steps
+1. Build temperature grid→district lookup.
+2. Build rainfall grid→district lookup.
+3. Assign nearest grid where necessary.
+4. Save mapping for reuse.
+
+Output
+Grid-to-district mapping tables.
+
+====================================================================
+PHASE 3 — DAILY DISTRICT WEATHER PANEL
+====================================================================
+
+For each year
+
+1. Aggregate Tmax.
+2. Aggregate Tmin.
+3. Aggregate Rainfall.
+4. Merge variables.
+5. Compute Tmean = (Tmax + Tmin)/2.
+
+Output
+
+phase0_output/district_daily_weather.csv
+
+One row per
+(district, date)
+
+Columns
+
+district
+date
+year
+month
+day
+tmax
+tmin
+tmean
+rainfall
+
+====================================================================
+PHASE 4 — MONTHLY AGGREGATION
+====================================================================
+
+Aggregate daily observations into monthly statistics.
+
+Output
+
+phase0_output/district_monthly_weather.csv
+
+One row per
+(district, year, month)
+
+Columns
+
+district
+year
+month
+avg_tmax
+avg_tmin
+avg_tmean
+monthly_rainfall
+rainy_days
+HDD_10
+HDD_15
+HDD_18
+
+====================================================================
+PHASE 5 — YEARLY AGGREGATION
+====================================================================
+
+Aggregate monthly observations into yearly summaries.
+
+Output
+
+phase0_output/district_yearly_weather.csv
+
+One row per
+(district, year)
+
+Containing yearly temperature, rainfall and HDD summaries.
+
+====================================================================
+PHASE 6 — SPI CONSTRUCTION
+====================================================================
+
+Using monthly rainfall
+
+Compute
+
+- SPI-1
+- SPI-3
+
+Output
+
+phase0_output/district_monthly_spi.csv
+
+One row per
+(district, year, month)
+
+====================================================================
+PHASE 7 — METADATA
+====================================================================
+
+Generate metadata describing
+
+- analysis period
+- missing values
+- years processed
+- districts processed
+
+Output
+
+phase0_output/weather_metadata.json
+
+====================================================================
+FINAL OUTPUTS
+====================================================================
+
+phase0_output/
+
+district_daily_weather.csv
+district_monthly_weather.csv
+district_yearly_weather.csv
+district_monthly_spi.csv
+weather_metadata.json
+
+These files become the inputs to the Weather Feature Engineering module.

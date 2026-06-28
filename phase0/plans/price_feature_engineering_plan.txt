@@ -1,0 +1,242 @@
+PRICE FEATURE ENGINEERING MODULE DESIGN
+
+OBJECTIVE
+
+Transform the monthly district-level price panel produced by the Price
+Preprocessing module into a single district-level feature table
+(district_price_features.csv) for district clustering.
+
+====================================================================
+INPUT FROM PREPROCESSING MODULE
+====================================================================
+
+Input File
+
+phase0_output/district_monthly_prices.csv
+
+Expected Structure
+
+One row represents one district in one calendar month.
+
+Required Columns
+
+-   district
+-   year
+-   month
+-   mean_modal_price
+-   mean_min_price
+-   mean_max_price
+-   mean_price_spread
+-   mean_arrivals
+-   reporting_days
+-   is_imputed (0/1)
+
+Expected Size
+
+-   20 years × 12 months = approximately 240 rows per district
+-   One continuous monthly time series with no missing months
+-   All missing months already imputed by the preprocessing module
+
+Output of this module
+
+phase0_output/district_price_features.csv
+
+One row per district.
+
+====================================================================
+PHASE 1 — LOAD & VALIDATE
+====================================================================
+
+1.  Load district_monthly_prices.csv.
+2.  Filter analysis years (default 2006–2025).
+3.  Validate required columns.
+4.  Verify every district has a continuous monthly series.
+5.  Sort chronologically.
+
+====================================================================
+PHASE 2 — OVERALL PRICE FEATURES
+====================================================================
+
+1.  Average Modal Price Calculation Mean(all monthly mean_modal_price)
+
+2.  Median Modal Price Median(all monthly mean_modal_price)
+
+3.  Average Minimum Price Mean(all monthly mean_min_price)
+
+4.  Average Maximum Price Mean(all monthly mean_max_price)
+
+5.  Mean Price Spread Mean(all monthly mean_price_spread)
+
+====================================================================
+PHASE 3 — PRICE VARIABILITY FEATURES
+====================================================================
+
+1.  Price Standard Deviation Std(monthly mean_modal_price)
+
+2.  Price CV Std / Mean ×100
+
+3.  Price IQR Q3 − Q1 of monthly mean_modal_price
+
+4.  Maximum Monthly Price Maximum(monthly mean_modal_price)
+
+5.  Minimum Monthly Price Minimum(monthly mean_modal_price)
+
+6.  Rolling 3-Month Volatility Compute rolling standard deviation over a
+    3-month window. Store the average of all rolling values.
+
+7.  Rolling 6-Month Volatility Compute rolling standard deviation over a
+    6-month window. Store the average.
+
+8.  Maximum Monthly Price Change Maximum(abs(price_t − price_t−1))
+
+9.  Mean Absolute Monthly Price Change Mean(abs(price_t − price_t−1))
+
+====================================================================
+PHASE 4 — SEASONAL FEATURES
+====================================================================
+
+For each calendar month (Jan–Dec)
+
+Average Price Mean(price for that calendar month across all years)
+
+Monthly Standard Deviation Std(price for that calendar month across all
+years)
+
+Produces
+
+-   jan_avg_price … dec_avg_price
+-   jan_std_price … dec_std_price
+
+Additional Features
+
+Seasonal Amplitude Max(month averages) − Min(month averages)
+
+Seasonal CV Std(month averages)/Mean(month averages)
+
+Seasonal Strength Variance(month averages)/Variance(full monthly series)
+
+Peak-to-Trough Ratio Maximum month average / Minimum month average
+
+Peak Price Month Calendar month with highest long-run average.
+
+Trough Price Month Calendar month with lowest long-run average.
+
+Peak Month Consistency Percentage of years whose annual peak occurred in
+the dominant peak month.
+
+====================================================================
+PHASE 5 — TREND FEATURES
+====================================================================
+
+1.  Linear Trend Fit
+
+Price = a + bt
+
+Store slope b.
+
+2.  Quadratic Trend Fit
+
+Price = a + bt + ct²
+
+Store quadratic coefficient c.
+
+3.  Price CAGR
+
+Compute yearly average prices.
+
+CAGR=(LastYear/FirstYear)^(1/(N−1))−1
+
+4.  Mann–Kendall Statistic
+
+Apply Mann–Kendall test to monthly prices.
+
+Store Kendall Tau statistic (and optionally p-value).
+
+5.  Structural Break Count
+
+Detect change points using a change-point detection algorithm
+(e.g. ruptures).
+
+Store number of detected breaks.
+
+====================================================================
+PHASE 6 — MARKET ACTIVITY FEATURES
+====================================================================
+
+1.  Average Arrivals Mean(monthly arrivals)
+
+2.  Arrival CV Std(arrivals)/Mean(arrivals)
+
+3.  Arrival Trend Slope of linear regression on monthly arrivals.
+
+4.  Arrival Seasonality Seasonal amplitude of monthly arrivals.
+
+5.  Arrival Volatility Std(monthly arrivals)
+
+6.  Price–Arrival Correlation Pearson correlation between monthly prices
+    and arrivals.
+
+====================================================================
+PHASE 7 — PRICE DYNAMICS FEATURES
+====================================================================
+
+1.  Monthly Return
+
+(price_t-price_t-1)/price_t-1
+
+2.  Average Monthly Return Mean(all monthly returns)
+
+3.  Median Monthly Return Median(monthly returns)
+
+4.  Monthly Return Volatility Std(monthly returns)
+
+5.  Percentage of Positive Months Positive returns / total months ×100
+
+6.  Longest Increasing Streak Longest consecutive run of positive
+    monthly price changes.
+
+7.  Longest Decreasing Streak Longest consecutive run of negative
+    monthly price changes.
+
+8.  Number of Turning Points Count sign changes in monthly price
+    differences.
+
+9.  Maximum Drawdown Largest percentage decline from a historical peak
+    in the monthly series.
+
+====================================================================
+PHASE 8 — DATA QUALITY FEATURES
+====================================================================
+
+1.  Percentage Imputed Imputed months / total months ×100
+
+2.  Observed Years Count years containing original observations.
+
+3.  Imputed Years Count years requiring imputation.
+
+4.  Fraction of Zero-Arrival Months Months with arrivals=0 / total
+    months.
+
+5.  Fraction of Extrapolated Observations Extrapolated months / total
+    months.
+
+6.  Missing Years Before Imputation Years absent before preprocessing.
+
+====================================================================
+PHASE 9 — FINAL OUTPUT
+====================================================================
+
+Output File
+
+phase0_output/district_price_features.csv
+
+Structure
+
+-   One row per district (~75 rows)
+-   Approximately 55–70 engineered features
+
+These features will be merged with
+
+phase0_output/district_weather_features.csv
+
+to create the final district-level feature matrix used for clustering.

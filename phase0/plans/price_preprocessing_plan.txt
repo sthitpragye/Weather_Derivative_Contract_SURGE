@@ -1,0 +1,189 @@
+PRICE PREPROCESSING MODULE DESIGN
+
+OBJECTIVE
+
+Transform the district-wise yearly mandi price data (2006–2025) into a
+clean, continuous monthly price panel that serves as the input to the
+Price Feature Engineering module.
+
+====================================================================
+PHASE 1 — LOAD & CONSOLIDATE DATA
+====================================================================
+
+Input Directory
+
+UP_WHEAT_2006_2025/ district_1/ 2006.csv … 2025.csv district_2/ …
+
+Steps
+
+1.  Iterate through every district folder.
+2.  Read every yearly CSV available.
+3.  Validate required columns.
+4.  Convert date column to datetime.
+5.  Extract:
+    -   year
+    -   month
+6.  Remove duplicate records if present.
+7.  Sort chronologically.
+8.  Merge all yearly CSVs into one DataFrame per district.
+
+Expected Output
+
+One cleaned daily DataFrame for every district covering all available
+years.
+
+====================================================================
+PHASE 2 — MONTHLY AGGREGATION
+====================================================================
+
+Group By
+
+(year, month)
+
+Compute
+
+-   Mean Modal Price
+-   Mean Minimum Price
+-   Mean Maximum Price
+-   Mean Daily Price Spread = mean(max_price - min_price)
+-   Mean Arrivals
+-   Number of Reporting Days
+
+Expected Output
+
+One row per (year, month).
+
+Expected Columns
+
+district year month mean_modal_price mean_min_price mean_max_price
+mean_price_spread mean_arrivals reporting_days
+
+Expected Size
+
+Approximately 240 monthly observations per district (20 years × 12
+months).
+
+====================================================================
+PHASE 3 — MISSING MONTH IMPUTATION
+====================================================================
+
+Goal
+
+Create a continuous monthly time series.
+
+Case 1
+
+Single missing month
+
+Fill using
+
+(previous month + next month) / 2
+
+Apply independently to
+
+-   modal price
+-   minimum price
+-   maximum price
+-   arrivals
+
+------------------------------------------------------------------------
+
+Case 2
+
+Missing first month
+
+Copy first available following month.
+
+------------------------------------------------------------------------
+
+Case 3
+
+Missing last month
+
+Copy previous available month.
+
+------------------------------------------------------------------------
+
+Case 4
+
+Multiple consecutive months
+
+Use linear interpolation independently for every variable.
+
+------------------------------------------------------------------------
+
+Case 5
+
+Entire missing year
+
+If both neighbouring years exist, interpolate month-wise using the same
+calendar month.
+
+Otherwise use the nearest available year’s monthly values.
+
+------------------------------------------------------------------------
+
+Additional Processing
+
+-   Add is_imputed flag
+-   Preserve reporting_days for observed months
+-   Set reporting_days = 0 for fully imputed months
+
+Expected Output
+
+Continuous monthly time series with no missing months.
+
+====================================================================
+PHASE 4 — DATA VALIDATION
+====================================================================
+
+Perform
+
+-   Verify 12 months exist for every year.
+-   Verify chronological ordering.
+-   Verify no duplicate (district, year, month).
+-   Verify no missing prices.
+-   Verify no missing arrivals.
+-   Verify no negative prices.
+-   Verify reporting_days >= 0.
+-   Verify every imputed month has is_imputed = 1.
+
+Expected Output
+
+Validated monthly panel ready for feature engineering.
+
+====================================================================
+PHASE 5 — FINAL OUTPUT
+====================================================================
+
+Output File
+
+phase0_output/district_monthly_prices.csv
+
+Output Structure
+
+One row per district-month.
+
+Columns
+
+-   district
+-   year
+-   month
+-   mean_modal_price
+-   mean_min_price
+-   mean_max_price
+-   mean_price_spread
+-   mean_arrivals
+-   reporting_days
+-   is_imputed
+
+Expected Size
+
+Approximately
+
+75 districts × 240 months ≈ 18,000 rows
+
+This file serves as the direct input to the Price Feature Engineering
+module, which generates
+
+phase0_output/district_price_features.csv

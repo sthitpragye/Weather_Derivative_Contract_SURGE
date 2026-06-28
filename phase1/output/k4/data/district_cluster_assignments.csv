@@ -1,0 +1,76 @@
+district,cluster_id,silhouette_score_individual
+Baghpat,1,0.201263
+Bijnor,1,0.210772
+Meerut,1,0.244396
+Muzaffarnagar,1,0.215837
+Saharanpur,1,0.165346
+Shamli,1,0.122121
+Banda,2,-0.069023
+Chitrakoot,2,0.006124
+Gautam Buddha Nagar,2,0.015968
+Hamirpur,2,-0.037564
+Jhansi,2,0.052501
+Lalitpur,2,0.100785
+Mahoba,2,0.211956
+Agra,3,0.199226
+Aligarh,3,0.20486
+Ambedkar Nagar,3,-0.058147
+Amroha,3,0.146199
+Auraiya,3,0.125162
+Bareilly,3,0.078895
+Budaun,3,0.169879
+Bulandshahr,3,0.243079
+Etah,3,0.191609
+Etawah,3,0.181021
+Farrukhabad,3,0.083904
+Firozabad,3,0.201213
+Ghaziabad,3,0.159316
+Hapur,3,0.178783
+Hathras,3,0.221934
+Jalaun,3,0.031242
+Kannauj,3,0.092877
+Kanpur Dehat,3,0.089035
+Kasganj,3,0.182077
+Lakhimpur Kheri,3,0.026275
+Mainpuri,3,0.126466
+Mathura,3,0.250945
+Moradabad,3,0.102593
+Pilibhit,3,0.053116
+Rampur,3,0.066924
+Sambhal,3,0.143653
+Allahabad,4,0.092
+Amethi,4,0.082948
+Azamgarh,4,0.174369
+Bahraich,4,0.156095
+Ballia,4,0.231666
+Balrampur,4,0.153646
+Barabanki,4,0.141075
+Basti,4,0.159666
+Chandauli,4,0.226404
+Deoria,4,0.186859
+Faizabad,4,0.161326
+Fatehpur,4,0.083291
+Ghazipur,4,0.207169
+Gonda,4,0.113947
+Gorakhpur,4,0.222922
+Hardoi,4,0.050513
+Jaunpur,4,0.173585
+Kanpur Nagar,4,-0.024002
+Kaushambi,4,0.06297
+Kushinagar,4,0.168942
+Lucknow,4,0.000661
+Maharajganj,4,0.203557
+Mau,4,0.206966
+Mirzapur,4,0.165249
+Pratapgarh,4,0.08623
+Rae Bareli,4,0.060867
+Sant Kabir Nagar,4,0.098435
+Sant Ravi Das Nagar,4,0.133386
+Shahjahanpur,4,-0.064173
+Shravasti,4,0.178285
+Siddharth Nagar,4,0.183524
+Sitapur,4,0.120209
+Sonbhadra,4,0.184894
+Sultanpur,4,0.079331
+Unnao,4,0.04238
+Varanasi,4,0.122483

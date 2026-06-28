@@ -1,0 +1,76 @@
+district,cluster_id,silhouette_score_individual
+Baghpat,1,0.280168
+Bijnor,1,0.240291
+Meerut,1,0.324514
+Muzaffarnagar,1,0.306644
+Saharanpur,1,0.216176
+Shamli,1,0.221903
+Agra,2,0.370423
+Aligarh,2,0.332515
+Allahabad,2,0.383157
+Ambedkar Nagar,2,0.30784
+Amethi,2,0.422206
+Amroha,2,0.339551
+Auraiya,2,0.36157
+Azamgarh,2,0.416428
+Bahraich,2,0.363404
+Ballia,2,0.383444
+Balrampur,2,0.377374
+Banda,2,0.393693
+Barabanki,2,0.4337
+Bareilly,2,0.191207
+Basti,2,0.385511
+Budaun,2,0.209416
+Bulandshahr,2,0.206767
+Chandauli,2,0.418583
+Chitrakoot,2,0.336815
+Deoria,2,0.385308
+Etah,2,0.339895
+Etawah,2,0.331511
+Faizabad,2,0.437064
+Farrukhabad,2,0.362989
+Fatehpur,2,0.394876
+Firozabad,2,0.295001
+Gautam Buddha Nagar,2,0.047681
+Ghaziabad,2,0.074206
+Ghazipur,2,0.399424
+Gonda,2,0.341288
+Gorakhpur,2,0.400088
+Hamirpur,2,0.374973
+Hapur,2,0.13386
+Hardoi,2,0.403149
+Hathras,2,0.370134
+Jalaun,2,0.365525
+Jaunpur,2,0.388664
+Jhansi,2,0.307772
+Kannauj,2,0.396417
+Kanpur Dehat,2,0.362235
+Kanpur Nagar,2,0.371359
+Kasganj,2,0.375656
+Kaushambi,2,0.300406
+Kushinagar,2,0.322083
+Lakhimpur Kheri,2,0.211821
+Lalitpur,2,0.273298
+Lucknow,2,0.254338
+Maharajganj,2,0.350992
+Mahoba,2,0.238707
+Mainpuri,2,0.420576
+Mathura,2,0.250315
+Mau,2,0.391795
+Mirzapur,2,0.412421
+Moradabad,2,0.22656
+Pilibhit,2,0.143009
+Pratapgarh,2,0.445019
+Rae Bareli,2,0.4348
+Rampur,2,0.17836
+Sambhal,2,0.294497
+Sant Kabir Nagar,2,0.234875
+Sant Ravi Das Nagar,2,0.454968
+Shahjahanpur,2,0.37907
+Shravasti,2,0.368943
+Siddharth Nagar,2,0.359939
+Sitapur,2,0.421619
+Sonbhadra,2,0.348836
+Sultanpur,2,0.393679
+Unnao,2,0.397163
+Varanasi,2,0.349258

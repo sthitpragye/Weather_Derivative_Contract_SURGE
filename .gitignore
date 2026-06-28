@@ -1,0 +1,79 @@
+cat > .gitignore << 'EOF'
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# macOS
+.DS_Store
+
+# Large datasets
+Rainfall_data/
+Max_temp_data/
+Min_temp_data/
+
+# Generated outputs
+phase0_output/
+phase2_output/
+
+# Empty folder
+rain/
+
+# Personal / reference documents
+mentor_certificate.docx
+mentor_certificate-sthithpragye_annotated.pdf
+Plagiarism_Check_Report_Abstract*
+Hamilton Time Series Analysis.pdf
+Time_Series_Notes_Improved.pdf
+fpp-notes.pdf
+
+# Datasets
+Pulses_APY/
+Rice_APY/
+Sugarcane_APY/
+Wheat_APY/
+UP_WHEAT_2006_2025/
+gadm41_IND_shp/
+wheat_prices.csv
+EOF
+
+# Specific files to ignore
+Abstract for Weather Derivatives for Agricultural Risk Management.docx
+Abstract for Weather Derivatives for Agricultural Risk Management.pdf
+Daily Price Arrival Report-07-11-2025 to 18-06-2026 for Uttar Pradesh.csv
+Plagiarism_Check _Report_Abstract for Weather Derivatives for Agricultural Risk Management.pdf
+Research Proposal.pdf
+district_market_map_backup.json
+
+# preprocessing/debugging
+analysing_data_debug/audit_output_debug
+analysing_data_debug/debug_output
+analysing_data_debug/wheat_prices_processed
+analysing_data_debug/P3_zero_prices.csv
+analysing_data_debug/P4_price_outliers_files.csv
+analysing_data_debug/P6_header_only_files.csv
+audit_output
+
+data_analysis.ipynb
+rainfall_data.ipynb
+weather_derivatives.ipynb
+district_market_map_wheat_only.json
+district_market_map.json
+File_structure.txt
+
+phase0_weather_indices.py
+phase1_clustering.py
+phase1_prep_features.py
+phase1_prep_features.py
+phase2_step1.py
+
+
