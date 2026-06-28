@@ -24,7 +24,7 @@ GEOJSON = Path(
     "/Users/sthitpragye/Desktop/Finance/SURGE/phase1/geoBoundaries-IND-ADM2.geojson"
 )
 
-RUN = "auto"        # change to "k4", "k5", etc.
+RUN = "k3"        # change to "k4", "k5", etc.
 
 CLUSTERS = (
     PROJECT_ROOT
